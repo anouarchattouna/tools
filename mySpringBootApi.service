@@ -1,0 +1,21 @@
+# This script allows to start|stop|restart|status mySpringBootApi service
+# It goes under /etc/systemd/system/mySpringBootApi.service
+[Unit]
+Description=Service manage mySpringBootApi
+After=network.target
+
+[Service]
+User=appli
+WorkingDirectory=/path/to/my/api/mySpringBootApi
+ExecStart=/bin/java -Dspring.profiles.active=dev -Dserver.port=8765 -Djavax.net.ssl.trustStore=/path/to/my/api/mySpringBootApi/config/mySpringBootApiTrustStore -Djavax.net.ssl.trustStorePassword=**** -jar /path/to/my/api/mySpringBootApi/mySpringBootApi.jar
+ExecStop=/bin/kill -15 $MAINPID
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+
+# ll /path/to/my/api/mySpringBootApi/
+# total 31704
+# drwxr-xr-x. 2 appli utilisateur     4096 Apr 28 17:01 cacerts
+# drwxr-xr-x. 2 appli utilisateur     4096 Apr 28 17:01 config
+# -rw-r--r--. 1 appli utilisateur 32455669 Jul 19 14:47 mySpringBootApi.jar
